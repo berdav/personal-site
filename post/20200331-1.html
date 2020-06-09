@@ -1,0 +1,118 @@
+<html>
+	<head>
+		<title>D. - Inject unsupported OSs in the clouds</title>
+		<link rel="stylesheet" type="text/css" href="../main.css"/>
+	</head>
+	<body>
+		<div id="maindiv">
+			<a href="../">Home</a>
+			<h1>Inject virtual machines in the clouds</h1>
+			<h2>31 March 2020</h2>
+			<p>
+			<b>TL;DR:</b>[5]<br/>
+			<br/>
+			Hi!<br/>
+			Recently we[1] played saarctf[2].  It was really really funny
+			to play.
+			This competition was an attack/defence CTF, you can find a
+			link[3] to the liveoverflow video that describe how this
+			kind of competitions works.<br/>
+			<br/>
+			As you can see from the site of the CTF, it includes a router
+			per team in the network layout.  Based on Linux.
+			But...when we decided our infrastructure the chosen operating
+			system for the routing was OpenBSD.  How unfortunate!<br/>
+			<br/>
+			That is not a problem, you may think, you replace the provided
+			router with your OpenBSD machine and you're well to go.
+			<br/>
+			<br/>
+			Well, yes...and no.<br/>
+			<br/>
+			This was the first attack/defence CTF we
+			played from home thanks to the ncovid-2019. :)
+			As many of us doesn't have powerful x86_64 machines and/or
+			optical-fiber based network connection we decided to use
+			a cloud provider to host our infrastructure[4].<br/>
+			<br/>
+			And now comes the problem: many cloud providers do not
+			support OpenBSD.<br/>
+			<br/>
+			<h3>VM injector</h3>
+			To run an unsupported operating system on the cloud I've
+			created a script that push the operating system raw image
+			and burn it into the virtual disk[5].<br/>
+			<br/>
+			If you are still reading I suppose that you do not want
+			a copy and paste of the readme of the project but the gory details
+			in their entire glory. ;)<br/>
+			<br/>
+			When the image get pushed we cannot just burn it to the
+			running disk.  We need, at least, to move it to a disk that will
+			not be touched by the burning process and unmount the target disk.
+			Unfortunately, the root partition is on the disk we want to nuke. :)<br/>
+			<br/>
+			This bring us to the next component of the script, <code>pivot_root</code>.
+			This systemcall will change the running root of the system, giving us
+			the opportunity to mount the system over a ramdisk and wipe the main
+			disk.  As we will not have any program in the new root we first copy
+			busybox and the target image to a new ramdisk, and then we <code>pivot_root</code> in.<br/>
+			<br/>
+			After that step we can <code>dd</code> the new disk over the pre-installed
+			main disk and reboot.  Then the new system will (hopefully) show up.<br/>
+			<br/>
+			<h3>OpenBSD autoinstall installXX.fs</h3>
+			There is only another step to complete our system: OpenBSD can be
+			autoinstalled using a file called <code>/install.conf</code>.  To do so you
+			need to recompile the OpenBSD install image and place the file in the root of
+			your custom <code>install.fs</code><br/>
+			<br/>
+			If you don't have an OpenBSD system the easiest way to
+			do that is create a virtual machine running it.  The installation process
+			is pretty straightforward, but we have a <b>vagrant</b> VirtualBox virtual machine
+			available in the vagrant repository[6].
+			<br/>
+			You can init that machine using
+			<pre> <code>$ mkdir openbsd_autoinstaller
+$ cd openbsd_autoinstaller
+$ cat - >Vagrantfile <<_END_
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "berdav/openbsd6.6"
+  config.ssh.shell = "/bin/ksh"
+  config.ssh.sudo_command = "/bin/doas %s"
+
+  config.vm.box_check_update = true
+
+  config.vm.synced_folder ".", "/vagrant",disabled: true
+
+  config.vm.provider "virtualbox" do |vb|
+    # Customize the amount of memory on the VM:
+    vb.memory = "4096"
+  end
+end
+_END_
+$ vagrant up
+$ vagrant ssh </code> </pre>
+			Now that you've an installation of OpenBSD up and running
+			you can configure your custom installfs.
+			<br/>
+			In a following post I'll show how to create a custom install fs with a script.
+			<br/>
+			<br/>
+
+			Have fun and stay home!<br/>
+			D.<br/>
+			<br/>
+			<hr/>
+			[1] The <a href="https://ulis.se">ULISSE</a> team.<br/>
+			[2] <a href="https://ctf.saarland/">saarctf</a> Attack/defence challenge<br/>
+			[3] LiveOverflow video that explains the A/D CTF format <a href="https://www.youtube.com/watch?v=RXgp4cDbiq4">youtube link.</a><br/>
+			[4] <a href="https://www.hetzner.com/cloud">Hetzner cloud provider</a><br/>
+			[5] Script hosted on <a href="https://github.com/berdav/vm_injector">github</a><br/>
+			[6] openbsd virtual machine disk hosted on <a href="https://app.vagrantup.com/berdav/boxes/openbsd6.6">vagrantup</a>
+		</div>
+	</body>
+</html>

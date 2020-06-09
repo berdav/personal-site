@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<title>D. - CVE-2020-2703</title>
+		<link rel="stylesheet" type="text/css" href="../main.css"/>
+	</head>
+	<body>
+		<div id="maindiv">
+			<a href="../">Home</a>
+			<h1>CVE-2020-2703</h1>
+			<h2>20 February 2020</h2>
+			<p>
+			Hi!<br/>
+			<br/>
+			Recently I discovered an issue in the VirtualBox VM hypervisor.
+			This famous piece of software can be extended by using the so-called
+			VirtualBox extension packs.  This packs enable the platform
+			to have enhanced features and one of them is the PCIe pass-through.
+			<br/>
+			<br/>
+			I'm an avid user of the PCIe pass-through in <code>KVM</code> and I wanted
+			to try this kind of feature also in the VirtualBox hypervisor.
+			<br/>
+			<br/>
+			This feature can be activated by using the <code>--pci-attach</code> flag and
+			specifying a PCI bus to attach to the virtual machine.
+			<br/>
+			Obviously, this feature must be regulated by some kind of
+			group or super-user only access, but that is not the case.
+			<br/>
+			<br/>
+			In this case this can lead to two problematics:
+			<ul>
+				<li>Any unprivileged user on the machine can pass
+				a device of the machine causing (at least) a denial
+				of service.</li>
+				<li>Any unprivileged user on the machine can steal
+				data from devices excluding them from the host.</li>
+			</ul>
+			First, I have tried to pass a critical device in the virtual machine,
+			this nuked my running system, stealing a device from the
+			host.  Then, I've tried to pass a disk which was a part of
+			a software <code>RAID-1</code> into the virtual machine, placing the disks
+			on different PCI buses.  This experiment can lead to
+			the leak of <code>/etc/shadow</code> files or analogous leaks.
+			<br/>
+			<br/>
+			In the end I've sent a PoC to the oracle security team,
+			which replied immediately to this issue, fixing the
+			hypervisor.
+			<br/>
+			<br/>
+			Bye,<br/>
+			D.<br/>
+			<br/>
+			<hr/>
+		</div>
+	</body>
+</html>

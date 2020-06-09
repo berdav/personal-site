@@ -1,0 +1,218 @@
+<html>
+	<head>
+		<title>D. - Flashing ice40hx8k-evb Open Source FPGA with an ft2232h</title>
+		<link rel="stylesheet" type="text/css" href="../main.css"/>
+	</head>
+	<body>
+		<div id="maindiv">
+			<a href="../">Home</a>
+			<h1>Flashing ice40hx8k-evb Open Source FPGA with an ft2232h</h1>
+			<h2>04 June 2020</h2>
+			<p>
+			Hi!<br/>
+			<br/>
+			Recently I had to flash a test program in my ice40hx8k-evb[1]
+			board.<br/>
+			<br/>
+			This PGA has the killer feature of being completely programmable
+			without proprietary tools[2] and to be a fully open source
+			design, unlike almost all competitors'
+			products.  Futhermore this FPGA is sold to the customer market at low
+			price making it a perfect target for the maker community.
+			<br/>
+			One of the downsides of this FPGA is the lack of high speed clocks[3]
+			and the limited number of available LUTs (1K or 8K).
+			<br/>
+			<h2>Structure of the ice40 FPGA Evaluation board</h2>
+			This board is composed of the base FPGA chip (cn256) and a reference
+			quartz oscillator at 100MHz.  <br/>
+			<br/>
+			The cn256 model of the FPGA has a configurable PLL onboard, this
+			device can multiply the frequency of our input clock to achieve higher
+			frequencies, ice40hx8k's PLL can lock to frequency 64 times higher than
+			the input frequency (but be aware that the FPGA internal circuitery
+			cannot handle such high frequencies!).  <br/>
+			<br/>
+			This will enable us to use high speed clocks starting with a slower
+			(and precise) clock source.
+			<br/>
+			
+			<h2>Programming the FPGA</h2>
+			The interactions with the FPGA are not handled by any operating system.
+			You'll need a direct interaction with the storage medium of the FPGA
+			to write the bitstream.  <br/>
+			<br/>
+			We will need some hardware and software for this task,
+			my current lab setup is composed of: <br/>
+			Hardware:
+			<ul>
+			<li>1 x ICE40HX8K-EVB FPGA</li>
+			<li>1 x SPI interface. I have a ft2232h breakout board, it can be an iceduino, raspberry pi or a buspirate.
+			<li>1 x USB power supply, I have a power supply which provides 2400mA.</li>
+			<li>1 x Homemade cable to power up the FPGA using an USB power supply.</li>
+			<li>6 x dupont cable female to female (you may need
+			some other gender combinations depending on your SPI
+			interface).  Preferably <= 10cm of length.</li>
+			</ul>
+			<br/>
+			Software:
+			<ul>
+			<li>Icestorm[2]: to program the FPGA.</li>
+			<li>Yosys[4]: to syntetize the verilog program.</li>
+			<li>nextpnr[5]: to perform the place and route.</li>
+			</ul>
+			<h3>ft2232h</h3>
+			The ft2232h is a USB to serial protocol interface, is capable of
+			interface USB bus to SPI, JTAG, UART, I2C and bit-banging other
+			protocols. It is fully compatible with OpenOCD[6] and Flashrom[7] thus
+			enabling the flashing of the bitstream on the on-board E²PROM.
+			<br/>
+			Drivers for this kind of chips are shipped in every modern pre-compiled
+			kernel for common distributions (Arch Linux, Debian, Ubuntu).
+
+			<h3>icestorm</h3>
+			Icestorm is an open source (GPL) toolchain for ice40 FPGAs.  It can be
+			used to program and read flash chips.  It is fully compatible with
+			ft2232h (Clifford Wolf developed the tool for this platform).
+			To compile icestorm you should follow this steps:
+			<pre> <code>
+$ git clone https://github.com/cliffordwolf/icestorm
+$ cd icestorm
+$ make
+# make install
+			</code> </pre>
+			Looking in the code of icestorm we can see that the pinout for bit-banging the
+			flash is a little different from the datasheet of the ft2232h:
+			<br/>
+			From <a href="https://github.com/cliffordwolf/icestorm/blob/master/iceprog/mpsse.c">
+			https://github.com/cliffordwolf/icestorm/blob/master/iceprog/mpsse.c</a>
+			<pre> <code>
+/* FTDI bank pinout typically used for iCE dev boards
+ * BUS IO | Signal | Control
+ * -------+--------+--------------
+ * xDBUS0 |    SCK | MPSSE
+ * xDBUS1 |   MOSI | MPSSE
+ * xDBUS2 |   MISO | MPSSE
+ * xDBUS3 |     nc |
+ * xDBUS4 |     CS | GPIO
+ * xDBUS5 |     nc |
+ * xDBUS6 |  CDONE | GPIO
+ * xDBUS7 | CRESET | GPIO
+ */
+			</code> </pre>
+			Using this pinout we can connect the FPGA pins to our FT2232H chip.
+			Keep in mind that GND should be connected and 3.3V pin _must_ be left
+			floating.
+			<br/>
+			Looking from the component side you should see this connector:
+<pre> <code>
+ICE40
+  │
+  │ PCB
+  │     ┌──┐
+  │ SSB │··│ SCK
+  │ SDO │··│ SDI
+  │CRST │··  CDONE
+  │ TXD │··│ RXD
+  │ GND │··│ 3.3V
+  │     └──┘
+  │ Power
+  │  Jack
+  └─────────────────
+</code></pre></br>
+			Connect to the correct pins of your FT2232H board, and then
+			you should have a result similar to this one:
+			<img src="../data/setup_ft2232h_ice40hx8k.png"></img><br/>
+			In this image you can see:
+			<ul>
+				<li>My ice40hx8k (the red board)</li>
+				<li>My homemade power cable, it simply connects power lines of
+				an USB cable to a power jack connector.</li>
+				<li>My ft2232h breakout board (the green one)</li>
+			</ul>
+
+			Pressing the reset button present on the FPGA PCB we can dump or
+			reprogram the flash.  <br/>
+			<br/>
+			Power up the FPGA and the programmer, press and keep the reset button,
+			launch <code># iceprog -t</code> to identify the flash and you should see some binary
+			garbage different from 0xff and 0x00.<br/>
+			<br/>
+			If you experience some difficulties try to slow down the clock using
+			<code># iceprog -t -s</code> and append the <code>-s</code> switch to every
+			<code>iceprog</code> command.<br/>
+			<br/>
+			If this, again, fails, try to use shorter wires, the connections shall
+			be &lt; ~15cm.
+			<h3>Our first flash interaction</h3>
+			After checking the connection between the FPGA and the programmer you
+			can try to retrive the running bitstream, using
+			<code># iceprog -r /tmp/flash-content.bin</code>, after some time you will receive
+			a binary file.  As a rule of thumb you can try to read some strings
+			present in the bitstream using <code>strings</code>:<br/>
+			<br/>
+
+		<pre><code>
+$ strings /tmp/flash-content.bin
+Lattice
+iCEcube2 2015.04.27409
+Part: iCE40HX8K-CT256
+Date: Jun 29 2017 09:22:59
+Bx08
+</code> </pre>
+			This will confirm that our read is good.  As a more accurate check you
+			can try to re-read some times the flash and check if the read lead to
+			the same file.<br/>
+			<br/>
+		<pre><code>
+$ sha512sum /vagrant/read*
+dd2f1c3f0a7f6868da8cad82860a40738...
+026d7a6114558efda981c50308737bb71...
+dd2f1c3f0a7f6868da8cad82860a40738...
+		</code></pre><br/>
+
+			As you can see the first read and the third read lead us to the same
+			file, in the second read we had some reading problems.
+
+			<h3>Blinking leds</h3>
+			To syntetize and compile our first program we need the syntesizer
+			program and the place and route tool.  In the open source toolchain
+			this tools are called respectively: <code>yosys</code> and
+			<code>next-pnr</code>.
+			
+			This tools are the basis for the compilation of FPGA bitstreams.
+			Our first project will be the blinking leds demo available at the end of this
+			page[8] <br/>
+			<br/>
+			With this test you can see the led working and check if your
+			programming setup is done well.  <br/>
+			<br/>
+			As you can see, the program is in VHDL, not in Verilog, to transpile
+			the unsupported language in Verilog a tool called vhd2vl[9] is employied.  <br/>
+			<br/>
+			As described in the previous section, you can flash the generated bitstream
+			in your FPGA using <code># iceprog ./led.bin</code><br/>
+			<br/>
+			Have fun with your open source FPGA! :)<br/>
+			If you have some question send me an e-mail or a Telegram message, you
+			can find the addresses in the home page!
+			<br/>
+			Bye,<br/>
+			D.<br/>
+			<br/>
+			<hr/>
+			[1] <a href="https://www.olimex.com/Products/FPGA/iCE40/iCE40HX8K-EVB/open-source-hardware">
+			Ice40hx8k-evb Olimex product page</a>
+			<br/>
+			[2] <a href="http://www.clifford.at/icestorm/">Project icestorm homepage</a><br/>
+			[3] <a href="https://www.latticesemi.com/~/media/LatticeSemi/Documents/DataSheets/iCE/iCE40LPHXFamilyDataSheet.pdf">
+			Lattice semiconductor datasheet for ice40 series</a></br>
+			[4] <a href="https://github.com/YosysHQ/yosys">Github link of yosys</a><br/>
+			[5] <a href="https://github.com/YosysHQ/nextpnr">Github link of nextpnr</a><br/>
+			[6] <a href="http://openocd.org/">OpenOCD, On Computer Debugger, home page</a><br/>
+			[7] <a href="https://flashrom.org/Flashrom">Flashrom homepage</a><br/>
+			[8] The program, in VHDL, can be found <a href="../data/ice40hx8k_led_blinker_vhdl.tar.xz">here</a><br/>
+			[9] <a href="https://github.com/ldoolitt/vhd2vl/">Github link of vhd2vl</a><br/>
+	</div>
+	</body>
+</html>
