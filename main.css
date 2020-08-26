@@ -5,7 +5,7 @@ body {
 div {
 	padding-left: 10%;
 	padding-right: 10%;
-max-width: 70ch;
+	max-width: 70ch;
 }
 
 div h1 {
@@ -25,5 +25,11 @@ pre code {
 	padding-right: 20px;
 	margin-top:-20px;
 	margin-bottom:-20px;
-};
+}
 
+@media only screen and (max-width: 500px) {
+	/* For mobile phones: */
+	body {
+		font-size: 120%;
+	}
+}
