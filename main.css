@@ -27,6 +27,11 @@ pre code {
 	margin-bottom:-20px;
 }
 
+#students {
+	font-weight: bold;
+	color: red;
+}
+
 @media only screen and (max-width: 500px) {
 	/* For mobile phones: */
 	body {
