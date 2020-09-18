@@ -13,10 +13,12 @@ div h1 {
 }
 
 code {
-	background: black;
-	color: white;
+	background: #3f3f3f;
+	color: #cdcdcd;
 	padding: 3px;
+	margin-top: 2px;
 	font-weight: bold;
+	display: inline-block;
 }
 
 pre code {
