@@ -1,0 +1,335 @@
+<html>
+	<head>
+		<title>D. - Linee guida per la stesura della Tesi di Laurea</title>
+		<link rel="stylesheet" type="text/css" href="main.css"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body>
+		<div id="maindiv">
+			<a href="index.html">Home</a>
+			<h1>Linee guida per la stesura della Tesi di Laurea</h1>
+			Queste linee guida servono per la richiesta e la
+			consegna della tesi con il team del Prof.
+			Prandini.<br/>
+			<br/>
+			I punti riguardano le Tesi triennali ma sono
+			estendibili alla scrittura delle Tesi magistrali.<br/>
+			<br/>
+			<h2>Scrittura</h2>
+			<ul>
+				<li>La tesi scritta in LaTeX (a parte
+					casi particolari), questo
+					linguaggio è molto più elastico
+					di Word nella tipografia.
+					Esiste un template "ufficioso"
+					di Unibo[1].  <b>Non</b> è
+					possibile inserire il logo
+					dell'Università. Potete usare
+					editor online come overleaf[2]</li><br/>
+				<li>Un numero minimo di pagine, circa 50
+					(contando le pagine vuote).</li><br/>
+				<li> La tesi prevede una bibliografia,
+					normalmente è necessario
+					raccogliere questa prima della
+					scrittura, in modo da inserire
+					(tramite \cite e bibTeX) delle
+					citazioni nel corpo della tesi.
+					Una tesi triennale ha bisogno di
+					circa 10 riferimenti
+					bibliografici.</li><br/>
+				<li>È necessario inserire estratti di
+					codice, tabelle o immagini nella
+					tesi quando questi aiutano la
+					comprensione dell'argomento.  Se
+					pensate di stare scrivendo una
+					parte molto tecnica e poco
+					comprensibile al lettore,
+					aiutatevi con le immagini o con
+					il codice.<br/>
+					<br/>
+					Al contrario, inserire solo
+					spezzoni di codice con poca
+					spiegazione è fortemente
+					sconsigliato (anche se questo
+					contiene tanti commenti).<br/>
+					<br/>
+					Se il codice o le immagini non
+					sono vostre (o se le avete
+					modificate in minima parte),
+					citate la fonte.<br/>
+					<br/>
+					<b>Ogni</b> immagine va spiegata
+					nel corpo della tesi riferendosi
+					direttamente e deve avere una
+					breve didascalia, lo stesso vale
+					per i frammenti di codice.<br/>
+					<br/>
+					Le immagini inserite devono
+					essere leggibili in ogni parte
+					e non occupare troppo spazio,
+					inserire un'immagine con
+					scritte illeggibili è
+					equivalente a inserire
+					un'immagine enorme.
+				</li><br/>
+				<li>
+				La struttura della tesi (sperimentale)
+				dovrebbe ricalcare questa scaletta:
+				<ol>
+					<li><b>Introduzione</b>. da
+						scrivere alla fine, un
+						breve riassunto su cosa
+						si andrà ad affrontare nella
+						tesi.</li><br/>
+					<li><b>Scenari applicativi e stato
+						dell'arte</b>. Cosa stiamo
+						affrontando, p.e. una
+						tesi che propone un
+						attacco a HTTPS dovrebbe
+						spiegare bene come
+						funziona la parte di
+						HTTPS attaccata e quali
+						sono le limitazioni.</li><br/>
+					<li><b>Analisi progettuale</b>..
+						Cosa vogliamo fare,
+						perché e quali sono
+						state le vostre scelte
+						per lo sviluppo "su
+						carta".</li><br/>
+					<li><b>Implementazione</b>.
+						Come abbiamo
+						implementato il
+						programma, se ci sono
+						state scelte particolari
+						o punti particolarmente
+						ostici che sono stati
+						superati.  Se ci sono
+						state difficoltà
+						insormontabili vanno
+						spiegate.</li><br/>
+					<li><b>Risultati</b>.
+						Descrivete e inserite
+						qui gli esperimenti
+						effettuati e i dati
+						raccolti.<br/>
+						<br/>
+						Se avete grafici e dati,
+						presentateli in questa
+						sezione (nella forma in
+						cui pensate sia più
+						facile visualizzare
+						quello che volete far
+						trasparire dai
+						dati).<br/>
+						<br/>
+						Scrivete sempre su che
+						supporti hardware o
+						software avete
+						effettuato le prove e
+						quante ne avete fatte
+						(se rilevante).</li><br/>
+					<li><b>Conclusione e sviluppi
+							futuri</b>.  da
+						scrivere alla fine, un
+						breve riassunto di cosa
+						si è affrontato, i
+						risultati (se quanto
+						indicato
+						nell'introduzione come
+						obiettivo è stato
+						raggiunto) e come è
+						possibile continuare la
+						tesi (p.e. se qualcosa
+						non è stato affrontato
+						per motivi di tempo o
+						limitazioni
+						hardware).</li><br/>
+				</ol>
+			</ul>
+		</p>
+		<p>
+		<h2>Proof reading</h2>
+			Prima di inviare una prima revisione della tesi
+			di laurea, assicuratevi di aver seguito questi
+			punti:
+			<ul>
+				<li><b>Spell checking</b>.
+					Passate uno spell checker su
+					tutto il corpo della tesi, ne
+					esistono vari, una buona scelta
+					può essere aspell su Linux.
+					Si può attivare su <tt>vim</tt>
+					nel seguente modo:<br/>
+					<code>:set spl=it</code><br/>
+					<code>:set spell</code><br/>
+					A questo punto è sufficiente
+					seguire le istruzioni.<br/>
+					<br/>
+					Il risultato è simile al
+					seguente:
+					<img src="data/spellcheck.png"
+					alt="Risultato spell checker
+					nell'editor VIM"/>
+					</li>
+					<br/>
+				<li>Controllate apostrofi, accenti
+					ed errori comuni:<br/>
+					<code>s/un altra/un'altra/</code><br/>
+					<code>s/obbiettivo/obiettivo/</code><br/>
+					<code>s/sopratutto/soprattutto/</code><br/>
+					<code>s/perchè/perché/</code><br/>
+					<code>s/ é / è /</code><br/>
+					<code>s/ E' / È /</code><br/>
+					<code>s/interfaccie/interfacce/</code><br/></li><br/>
+				<li><b>Struttura frasi</b>.  Non fate
+							frasi troppo
+							lunghe, una
+							frase in genere
+							non deve
+							occupare più di
+							tre righe.  Se
+							avete un dubbio
+							su una di
+							queste, provate
+							a ripeterla ad
+							alta voce (solo
+							espirando mentre
+							parlate), se
+							finite il fiato
+							è troppo lunga.
+							;)</li><br/>
+				<li><b>d eufoniche</b>.  L'uso smodato
+					della "d eufonica" (ad, od, ed)
+					è indicatore di poca cura nella
+					scrittura della tesi.  La regola
+					è:
+					<ul>
+						<li>Se una parola,
+							preceduta da una
+							singola vocale
+							{a,o,e}, inizia
+							con <b>la
+							stessa</b>
+						vocale, ci vuole la d.
+						"ad alta", "ed entrare",
+						"od obbedire"</li><br/>
+						<li>Se la vocale è
+							diversa
+							<b>non</b>
+							richede la d: "a
+							entrare", "e
+							obbedire", "o
+							alte"</li><br/>
+						<li>Se la parola inizia
+							con la forma
+							eufonica, la
+							vocale
+							precedente
+							<b>non</b>
+							richiede la d:
+							"o odore".</li><br/>
+						<li>"ad esempio" è
+							l'unica
+							eccezione.</li><br/>
+					</ul>
+					Per ricordare queste regole in
+					modo semplice basta pensare che
+					in Italiano, esistono parole con
+					due vocali adiacenti (reato).
+				<li>Virgolette di LaTeX.  Abbiamo
+					riscontrato che molte volte
+					vengono utilizzate le
+					virgolette di LaTeX nel modo
+					sbagliato.<br/>
+					<br/>
+					Scrivendo "parola", questa
+					viene renderizzata come
+					”parola” (con le virgolette
+					solo chiuse), per ottenere le
+					virgolette "giuste"
+					utilizzate ``parola''.</li><br/>
+				<li>Evitate il link rot[3].  Se citate
+					un URL, inserite la data in cui
+					l'avete visitato e, se
+					possibile, fate uno snapshot con
+					sistemi come <a
+					href="https://archive.org">archive.org</a>.
+					Non è necessario inserire la
+					data precisa in cui l'avete
+					visitato, basta che le
+					informazioni alla data inserita
+					siano coerenti con quello che
+					citate.</li><br/>
+				<li>I termini inglesi in un documento
+					Italiano vanno al singolare: Non
+					si scrive "le system calls" ma
+					"le system call", allo stesso
+					modo "gli switch", "i router",
+					etc.</li><br/>
+			</ul>
+			<p>
+			<h2>Invio Tesi</h2>
+			Se stai eseguendo una tesi con il Prof. Prandini
+			ricordati di inviare ogni domanda <b>sempre</b>
+			ai seguenti indirizzi <tt>unibo.it</tt>:<br/>
+			<tt>a.melis</tt><br/>
+			<tt>davide.berardi6</tt><br/>
+			<tt>marco.prandini</tt><br/>
+			Non è necessario inviare la tesi capitolo per
+			capitolo.  Quando vi sentite pronti, potete
+			inviare alcune parti per capire se state
+			procedendo nella direzione giusta.<br/>
+			<br/>
+			Richiediamo comunque alcuni update durante la
+			stesura della tesi, p.e.  durante lo sviluppo di
+			un eventuale applicativo, fatevi sentire.
+			:)<br/>
+			<br/>
+			Evitate di inviare la tesi per sistemi
+			alternativi alle semplici e-mail (Teams o
+			Telegram).<br/>
+			<br/>
+			N.B.: Normalmente abbiamo <u>molti</u> tesisti
+			per sessione.  Per questo, la consegna finale
+			indicata sul sito <b>non</b> è quella reale,
+			richiediamo la tesi completa (a meno di
+			correzioni/aggiunte) circa due settimane
+			prima.<br/>
+			<br/>
+			</p>
+			<p>
+			<h2>Presentazione</h2>
+			Le tesi triennali hanno a disposizione <b>solo 7
+			minuti</b> (per quanto riguarda ingegneria).
+			Cercate di spiegare in questo poco tempo il
+			senso e la parte fondamentale di quello che
+			avete fatto.<br/>
+			<br/>
+			Non c'è un template richiesto per la
+			presentazione, potete farla come più preferite,
+			consigliamo comunque di esportarla in PDF per
+			compatibilità tra i vari sistemi operativi.<br/>
+			<br/>
+			Consigliamo di limitare il numero di slides, non
+			è facile presentare 30 slides in 7 minuti.
+			Inoltre limitate i wall of text se non
+			strettamente necessari (in questo caso va bene
+			mettere tante immagini spiegandole a voce).<br/>
+			<br/>
+			La presentazione va inviata almeno un paio di
+			giorni prima agli stessi indirizzi.<br/>
+			<br/>
+			</p>
+			<hr/>
+			[1] <a href="https://corsi.unibo.it/magistrale/ScienzeInternet/tesi-in-latex">
+				https://corsi.unibo.it/magistrale/ScienzeInternet/tesi-in-latex
+			    </a><br/>
+			[2] <a href="https://overleaf.com">
+				https://overleaf.com
+			    </a><br/>
+			[3] <a href="https://en.wikipedia.org/wiki/Link_rot">
+				https://en.wikipedia.org/wiki/Link_rot
+			    </a><br/>
+		</div>
+	</body>
+</html>
