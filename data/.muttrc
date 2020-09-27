@@ -1,0 +1,172 @@
+# Core (mail related) features.
+set move=no
+set imap_keepalive=900
+
+set header_cache=/home/user/.mutt/cache/headers
+set message_cachedir=/home/user/.mutt/cache/bodies
+set certificate_file=/home/user/.mutt/certificates
+
+set mail_check = 60
+set mail_check_stats
+set hidden_host
+
+set nobeep
+
+set charset=utf-8
+set noallow_8bit
+
+alternative_order text/plain text/enriched text/html
+
+set sidebar_visible
+set sidebar_width=32
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+bind index,pager \Cp sidebar-prev
+bind index,pager \Cn sidebar-next
+bind index,pager \Co sidebar-open
+
+set imap_check_subscribed
+
+source "/home/user/.mutt/account2"
+source "/home/user/.mutt/account3"
+source "/home/user/.mutt/account4"
+source "/home/user/.mutt/account5"
+source "/home/user/.mutt/account6"
+source "/home/user/.mutt/account7"
+# Last one is the one which get loaded by default
+source "/home/user/.mutt/account1"
+
+macro index <f1> '<enter-command>source /home/user/.mutt/account1<enter><change-folder>!<enter>'
+macro index <f2> '<enter-command>source /home/user/.mutt/account2<enter><change-folder>!<enter>'
+macro index <f5> '<enter-command>source /home/user/.mutt/account3<enter><change-folder>!<enter>'
+macro index <f6> '<enter-command>source /home/user/.mutt/account4<enter><change-folder>!<enter>'
+macro index <f7> '<enter-command>source /home/user/.mutt/account5<enter><change-folder>!<enter>'
+macro index <f8> '<enter-command>source /home/user/.mutt/account6<enter><change-folder>!<enter>'
+macro index <f9> '<enter-command>source /home/user/.mutt/account7<enter><change-folder>!<enter>'
+
+# Search macro
+macro generic ,f "<shell-escape>mairix " "search with mairix"
+macro generic ,,f "<change-folder><kill-line>=.Search<enter>" "load the search results mailbox"
+
+# Look and feel related features.
+set sort=threads
+set sort_aux=last-date-received
+set uncollapse_jump
+set pager_index_lines=10
+
+set text_flowed=yes
+
+# Start vim in insert mode and
+set editor="vim -c 'startinsert' -c 'set cc=70' "
+
+# - colorscheme
+color normal     color253 color234
+#color indicator  color253 color233
+color indicator  color1 color233
+color status     color110 color16
+color tree       color208 color234
+color signature  color102 color234
+color message    color253 color234
+color attachment color117 color234
+color error      color30  color234
+color tilde      color130 color234
+color search     color100 default
+color markers    color138 default
+
+color quoted     color107 color234
+color quoted1    color66  color234
+color quoted2    color32  color234
+color quoted3    color30  color234
+color quoted4    color99  color234
+color quoted5    color36  color234
+color quoted6    color114 color234
+color quoted7    color109 color234
+color quoted8    color41  color234
+color quoted9    color138 color234
+
+color index      color202 color234 ~F
+color index      color39  color234 ~N
+color index      color39  color234 ~O
+color index      color229 color234 ~T
+color index      color240 color234 ~D
+
+color hdrdefault color30  color233
+color header     color132 color233 '^date:'
+color header     color153 color233 '^(to|cc|bcc):'
+color header     color120 color233 '^from:'
+color header     color178 color233 '^subject:'
+color header     color31  color233 '^user-agent'
+color header     color29  color233 '^reply-to'
+color sidebar_new yellow  default
+
+auto_view text/html
+
+# PGP Configuration
+set pgp_use_gpg_agent=yes
+set pgp_decode_command      ="/usr/local/bin/gpg2 \
+	--charset utf-8                           \
+	--output -                                \
+	--status-fd=2                             \
+	%f"
+set pgp_verify_command      ="/usr/local/bin/gpg2 \
+	--output -                                \
+	--verify %s                               \
+	%f"
+set pgp_decrypt_command     ="/usr/local/bin/gpg2 \
+	--output -                                \
+	--status-fd=2                             \
+	--decrypt                                 \
+        %f"
+set pgp_sign_command        ="/usr/local/bin/gpg2 \
+	--sign                                    \
+	%?a?-u %a?                                \
+	--armor                                   \
+	--detach-sign                             \
+	--status-fd=2                             \
+	--output - %f"
+set pgp_clearsign_command   ="/usr/local/bin/gpg2 \
+	--clearsign %?a?-u %a?                    \
+	--status-fd=2                             \
+	--charset utf-8                           \
+	--armor                                   \
+	--output - %f"
+set pgp_encrypt_only_command="/usr/local/bin/gpg2 \
+	--status-fd=2                             \
+	--always-trust                            \
+	--textmode                                \
+	--charset utf-8                           \
+	--armor                                   \
+        -r %r                                     \
+	--output -                                \
+	--encrypt                                 \
+	%f"
+set pgp_encrypt_sign_command="/usr/local/bin/gpg2 \
+	--always-trust                            \
+	--status-fd=2                             \
+	--charset utf-8                           \
+	--armor                                   \
+	--output -                                \
+	-r %r                                     \
+	--encrypt                                 \
+	--sign %?a?-u %a? %f"
+set pgp_import_command      ="/usr/local/bin/gpg2 \
+	--status-fd=2                             \
+	--import                                  \
+	%f"
+set pgp_export_command      ="/usr/local/bin/gpg2 \
+	--status-fd=2                             \
+	--armor                                   \
+	--export                                  \
+	%f"
+set pgp_verify_key_command  ="/usr/local/bin/gpg2 \
+	--status-fd=2                             \
+	--check-sigs                              \
+	--fingerprint                             \
+	%f"
+set pgp_list_pubring_command="/usr/local/bin/gpg2 \
+	--status-fd=2                             \
+	--with-colons                             \
+	--list-keys %r"
+set pgp_list_secring_command="/usr/local/bin/gpg2 \
+	--status-fd=2                             \
+	--with-colons                             \
+	--list-secret-keys %r"

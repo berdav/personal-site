@@ -1,0 +1,18 @@
+set from="redacted@gmail.com"
+set realname="D B"
+set folder="/home/user/mail/"
+set spoolfile="/home/user/mail/Gmail/Inbox"
+
+set postponed="+Gmail/[Gmail]/Bozze"
+set trash="+Gmail/[Gmail]/Cestino"
+set record="+Gmail/[Gmail]/Posta inviata"
+
+mailboxes ="📬 F5 Gmail"
+mailboxes ="Gmail/Inbox"
+mailboxes ="Gmail/[Gmail]/Importanti"
+mailboxes ="Gmail/[Gmail]/Posta inviata"
+mailboxes ="Gmail/[Gmail]/Speciali"
+mailboxes ="Gmail/Facebook"
+mailboxes ="Gmail/Security"
+
+set sendmail="/usr/local/bin/msmtp -a Gmail"

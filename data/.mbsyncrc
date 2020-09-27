@@ -1,0 +1,23 @@
+### @gmail.com
+IMAPAccount Gmail
+PipelineDepth 20
+Host imap.gmail.com
+User redacted@gmail.com
+PassCmd "gpg2 -dq --batch --pinentry-mode loopback --no-tty --for-your-eyes-only --passphrase-file /home/user/.passwords/passphrase /home/user/.passwords/gmail.gpg"
+SSLType IMAPS
+
+IMAPStore Gmail-remote
+Account Gmail
+
+MaildirStore Gmail-local
+Path /home/user/mail/Gmail/
+Inbox /home/user/mail/Gmail/Inbox
+Subfolders Verbatim
+
+Channel Gmail
+Master :Gmail-remote:
+Slave :Gmail-local:
+Patterns *
+
+Create Both
+SyncState *

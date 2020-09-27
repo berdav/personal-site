@@ -1,0 +1,6 @@
+base=/home/user/mail
+mfolder=.Search
+database=/home/user/.mairixdb
+maildir=Gmail/Inbox
+maildir=Gmail/Sent
+maildir=Gmail/Security
