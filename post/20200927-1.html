@@ -1,0 +1,267 @@
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title>D. - Reading emails: mutt + mbsync + mairix + imapfilter</title>
+		<link rel="stylesheet" type="text/css" href="../main.css"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body>
+		<div id="maindiv">
+			<a href="../">Home</a>
+			<h1>Reading emails: mutt + mbsync + mairix + imapfilter</h1>
+			<h2>27 September 2020</h2>
+			<p>
+			Hi!<br/>
+			During the last years (when I've started
+			working), I've started to receive e-mails from
+			different sources: students, co-workers,
+			social-networks, security bulletins, spam,
+			online required registrations (sigh...).<br/>
+			<br/>
+			I hate reading promotional emails, because they
+			are full of crappy html and requires time to be
+			filtered.<br/>
+			<br/>
+			Therefore I reviewed my e-mail Raspberry OpenBSD
+			setup (but can be ported to every POSIX
+			operating system, such as GNU/Linux) which, at the
+			moment is composed of:<br/>
+			<br/>
+			<ul>
+				<li><code>mutt</code> --
+					I love mutt[1].  It is fast, simple to use
+					and super customizable.  If you've read
+					the first page I hate html email.
+					That's for mutt.
+				</li>
+				<li><code>mbsync</code> --
+					I want to have my email
+					backup in a local (encrypted)
+					storage.  I don't want to lose
+					them because an online service
+					stop working and I've not done
+					the opt-out. ;)<br/>
+					<br/>
+					mbsync[2] just do this task.  It
+					download the emails to a
+					configurable directory.
+					<br/>
+					Also, having the e-mails in a local
+					storage makes mutt ultra-fast.<br/>
+					<br/>
+					The only downside is that
+					I need to sync manually the mail
+					every N minutes.  That makes the
+					synchronization process a less
+					real-time (but its for
+					email...it is ok to wait 5
+					minutes to get a notification).
+					If I'm waiting for an email
+					which I know was sent, I can
+					synchronize them manually.
+				<li><code>msmtp</code> --
+					SMTP must be simple (as the name
+					of the protocol states).  msmtp[3]
+					is a simple tool wrote with UNIX
+					philosophy.  You simply put the
+					mail in it and it will do its
+					SMTP-related things.
+					Straightforward configuration
+					and easily paired with mutt.
+				<li><code>mairix</code> --
+					While I do not have a lot of
+					emails (~5k per account with 4
+					accounts), I do not want to lose
+					time searching with clumsly IMAP
+					search.  Therefore I use
+					mairix[4]
+					with mutt integration to search
+					them.
+					<br/>
+					Before mairix, I've used mu for
+					this task.  The problem is that
+					mu uses redis, which is really
+					slow on my OpenBSD configuration
+					on the Raspberry pi (Probably,
+					the encrypted disk is
+					incompatible with the giant
+					database file created by redis).
+					<br/>
+				<li><code>imapfilter</code> --
+					Another thing I want to do is
+					automatically move secondary
+					emails from the INBOX to a
+					specific directory.  I don't
+					want to do it only locally but
+					also on server side (maybe I
+					can't access my system to read
+					emails, but I can do it using
+					the awkward web-interface).
+					<br/>
+					To do so I use imapfilter [5], which
+					is a really simple program to
+					write server side filters and
+					take actions.  It is
+					configurable in LUA.
+				<li><code>cron</code> -- To automatize
+					synchronization I use a simple
+					crontab.  A script to
+					synchronize emails gets executed
+					every 5 minutes.
+			</ul>
+
+			<br/>
+			That's for my setup, let's see in detail the configurations:
+
+			<h3>mutt</h3>
+			<!-- immagine mutt -->
+			At the link[6], you can find my .muttrc.  As you
+			can see I can select the inbox and the email to
+			use using Function keys (F1 for the first
+			account, etc, etc).  Every account file in .mutt
+			has the following format[7].  In these file I've
+			specified the maildir configured in
+			.mbsyncrc.<br/>
+			<br/>
+			To create mails I use <code>vim</code>, started
+			automatically in insert mode and with a colored
+			column at 70 chars.<br/>
+			<br/>
+			Another thing configured in the file is the
+			auto-dump of html emails.  In extreme cases you
+			can't see the URL in them and you need to
+			download the email and open it in the browser
+			(double check it to see if it contains js or
+			auto-loading images!!!), or just
+			<code>cat</code> it to a terminal and copy and
+			paste the URL.<br/>
+			<br/>
+			I don't do it too much, just 1/2 times per year,
+			for services which don't have a correct
+			pure-text mail handling (somebody said
+			conferences?).<br/>
+			<br/>
+
+			<h3>mbsync</h3>
+			.mbsyncrc is composed of fragments like the ones
+			you can see in [8], one per account.  As you can
+			see I've configured gpg and placed (encrypted)
+			passwords in an encrypted directory.  Using gpg
+			you can also specify the passphrase in a file
+			passed on the command line to automatize the
+			workflow.<br/>
+			<br/>
+			Using mbsync -a you will synchronize local
+			directories with remote IMAP server.<br/>
+			<br/>
+			When I was synchronizing gmail for the first
+			time I've got banned with a strange error
+			"Lockdown in sector 4".  That's because Gmail
+			does not support such an use-case ( downloading
+			10k emails in a day ;) ) therefore do it when
+			you're basically free from emails or synchronize
+			just a part of mails per day.<br/>
+			<br/>
+
+			<h3>msmtp</h3>
+			To send emails, the configuration is really
+			similar to the one of mbsync.  In my .msmtprc[9]
+			you can see that I've configured the options to
+			manage the encrypted passwords and basic
+			informations such as the remote SMTPS server,
+			tls support and the logfile.<br/>
+			<br/>
+			When using multiple accounts you only need to
+			replicate the part which configures Gmail.<br/>
+			<br/>
+
+			<h3>mairix</h3>
+			Mairix is a tool which is almost drop in, you
+			only need to instruct it where you have your
+			maildirs and which directories it must search
+			[10].<br/>
+			<br/>
+			Choose a name for the resultant maildir and set
+			it in .muttrc.
+			The following lines from .muttrc configure
+			mairix search:<br/>
+			<br/>
+<pre><code>macro generic ,f "<shell-escape>mairix " "search with mairix"
+macro generic ,,f "<change-folder><kill-line>=.Search<enter>" "load the search results mailbox"
+</code></pre><br/>
+			<br/>
+			Pressing <code>,f</code> you will search for emails (e.g.
+			pressing <code>,f thesis</code> you can search
+			for the emails containing "thesis"), when the
+			search is done you can display it using
+			<code>,,f</code>.<br/>
+			<br/>
+			When you want to index new emails (such as every
+			time you receive an email), you need to use:
+			<code>mairix -v -F</code> to index the
+			configured mailboxes.
+
+			<h3>imapfilter</h3>
+			Imapfilter is one of the most powerful tools in
+			this list.  It is configurable by using lua
+			scripts. You can find mine here[11].<br/>
+			<br/>
+			The configuration script
+			(~/.imapfilter/config.lua) gets executed every
+			time you issue <code>imapfilter</code>.  In
+			details the filter posted does:
+			<br/>
+			<ol>
+				<li>Read the password file and login to
+					Gmail;</li>
+				<li>Get the messages of the last 30
+					days;</li>
+				<li>Filter them by searching
+					<code>social@network.com</code>
+					in the "From" header;</li>
+				<li>Put the matched messages in a
+					specific directory (which
+					probably I will never read ;)
+					).</li>
+			</ol>
+			<h3>cron</h3>
+			As I said previously, the mail synchronization
+			is a manual process, to automatize it I have a
+			simple script [12] that does, in order:
+
+			<ol>
+				<li>Synchronize emails using mbsync</li>
+				<li>Filter them server side using imapfilter</li>
+				<li>Index the emails using mailrix</li>
+			</ol>
+			The system executes this script every 5
+			minutes during the day using cron:<br/>
+			<br/>
+<pre><code>$ crontab -l
+*/5 * * * * /home/user/mbsync.sh</code></pre><br/>
+			<br/>
+			<br/>
+			That's it!  If you have some suggestions or problems with a similar
+			setup do not hesitate to contact me...via email ;) <br/>
+			<br/>
+			You can find my address (a little obfuscated) in the home page.  <br/>
+			<br/>
+			Bye, <br/>
+			D.<br/>
+			<hr/>
+			[1] <a href="https://gitlab.com/muttmua/mutt">mutt Gitlab repository</a><br/>
+			[2] <a href="https://github.com/gburd/isync">isync/mbsync Github repository</a><br/>
+			[3] <a href="https://marlam.de/msmtp/">msmtp official site</a><br/>
+			[4] <a href="https://github.com/rc0/mairix">mairix Github repository</a><br/>
+			[5] <a href="https://github.com/lefcha/imapfilter">imapfilter Github repository</a><br/>
+
+			[6] <a href="../data/.muttrc">my .muttrc</a><br/>
+			[7] <a href="../data/.muttrc-per-account">my per-account muttrc</a><br/>
+			[8] <a href="../data/.mbsyncrc">my .mbsyncrc</a><br/>
+			[9] <a href="../data/.msmtprc">my .msmtprc</a><br/>
+			[10] <a href="../data/.mairixrc">my .mairixrc</a><br/>
+			[11] <a href="../data/imapfilter.lua">my imapfilter.lua</a><br/>
+			[12] <a href="../data/mailsync.sh">Script to synchronize emails</a><br/>
+	</div>
+	</body>
+</html>
