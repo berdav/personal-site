@@ -1,0 +1,247 @@
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title>D. - Simulating Raspberry PI GPIO interaction with QEMU</title>
+		<link rel="stylesheet" type="text/css" href="../main.css"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body>
+		<div id="maindiv">
+			<a href="../">Home</a>
+			<h1>Simulating Raspberry PI GPIO interaction with QEMU</h1>
+			<h2>4 December 2020</h2>
+			<p>
+			Hi!<br/>
+			<br/>
+			QEMU is an awesome software.
+			When I'm doing operating system
+			development-related things, I always
+			try them in QEMU.  That's the case of simulating
+			GPIOs.<br/>
+			<br/>
+			From time to time I've to do some
+			operating-system lessons.  Some of
+			these lessons need to interact with devices and
+			I want to explain how to interact with GPIOs.<br/>
+			<br/>
+			To do so I would need to tell to every student
+			to buy a Raspberry Pi or another devboard, which
+			is unbearable.  If a student broke his Raspberry
+			or lose it or whatever, he would need to buy
+			another one.<br/>
+			<br/>
+			But every student always have a computer, which
+			is usually running a Linux distribution. :)<br/>
+			<br/>
+			For this task, I've developed a simulator, which
+			you can download at [1].  With this you can
+			simulate GPIOs on a virtual raspberry Pi.<br/>
+			<br/>
+			<h2>Searching for a simulation</h2>
+			<p>There are some related works that can help
+			to interact with gpios from a virtual machine:
+			virtualgpios, gpios-mockup, etc etc.  All of
+			these cannot emulate "real"
+			raspberry gpios. I would need to recompile a
+			kernel module or give to the users a strange
+			command which will overfit the setup.</p>
+			<p>Therefore the only way to do so is from QEMU itself.</p>
+			<p>
+			The GPIOs are MMIO (Memory Mapped I/O),
+			writing to a location in memory will write on the gpio
+			control pheriperal.  Therefore is extremely easy
+			to modify, we just need to write on the guest memory. :)
+			</p>
+			<img width="95%" src="../data/bcm2835-gpios.png"></img>
+			<p>In the image you can see the mapping of GPIOs
+			controls and their memory addresses.  A more
+			detailed documentation is presented in the bcm2835
+			datasheet[2].
+			</p>
+
+			<h2>Searching for a writer</h2>
+			<p>
+			To interact with MMIO we need to write in the guest memory.
+			</p>
+			<p>
+			Qemu offers a debug protocol, documented in [3], <b>qtest</b>.
+			This is a line-based protocol which can be
+			attached to an Unix socket.  Interacting with this UNIX
+			socket (for instance, with <code>socat</code>) we can write
+			commands such as:
+			</p>
+
+			<p>
+<br/>
+<pre><code><span style="color:red">readl 0x10000</span>
+<span style="color:blue">OK 0x0000000000</span>
+<span style="color:red">writel 0x10000 0x10</span>
+<span style="color:blue">OK</span>
+</code></pre>
+<br/>
+
+			Respectively to read and write a long word.
+			(In red you see my requests, in blue the responses).
+			</p>
+
+			<p>
+			Pretty easy, no?  Well...sort of...if you write a
+			wrong command on the socket, the qemu hypervisor will
+			explode, and with it your swearing.
+			</p>
+			<p>
+			Also, we have a technical problem, if we try to
+			write on the location of the GPIO MMIO specified
+			in the datasheet (0x7e20xxxx), nothing will happen...
+			</p>
+
+			<h2>Search a guest memory location</h2>
+			Fortunately, every buffer allocated with
+			<code>memory_map_*</code> functions [4] of
+			Qemu APIs is labeled.  You can find it using a command
+			in the qemu monitor:<br/><br/>
+			<pre><code>(qemu) info mtree
+...
+    000000003f200000-000000003f200fff (prio 0, i/o): bcm2835_gpio
+</code></pre><br/>
+
+			<p>
+			We can clearly see that the memory location
+			<code>0x3f200000</code> is our GPIO MMIO.
+			Using this as specified in the datasheet will get us to our goal of
+			writing and reading GPIOs! :)</p>
+			<p>
+			That's how the <code>get $N</code> and <code>set $N $V</code> of the
+			application published at [1] works.
+			</p>
+			<p>
+			This procedure is also applicable at vanilla qemu.
+			</p>
+
+			You can try it launching virtual-gpio and then exporting gpio 4 in the
+			virtual machine with the following commands:
+			<ol>
+			<li>
+				Setup the Virtual Raspberry pi using <code>$ ./setup.sh</code>
+			</li>
+
+			<li>Launch the virtual-gpio application
+<br/><br/>
+<pre><code>
+$ ./virtual-gpio
+[ ] Virtual GPIO manager
+[ ] Listening for connections
+(gpio)> 
+</code></pre><br/></li>
+
+			<li>Execute qemu (remember to keep
+			<code>virtual-gpio</code> open!!!) using
+			<code>$ ./run.sh</code></li>
+
+			<li>Wait for the guest to boot, login and then
+			export a GPIO from Linux:
+			<br/><br/>
+			<pre><code>
+# echo 4 >/sys/class/gpio/export
+# echo in >/sys/class/gpio/gpio4/direction
+# cat /sys/class/gpio/gpio4/value
+0
+</code></pre>
+<br/>
+
+			<li>Modify the value of the GPIO from the
+			<code>virtual-gpio</code> application:
+<br/>
+<br/>
+<pre><code>(gpio)> set 4 1
+</code></pre>
+<br/>
+
+			<li>Read the result in the guest system
+<br/>
+<br/>
+<pre><code># cat /sys/class/gpio/gpio4/value
+1
+</code></pre>
+<br/>
+			</li>
+			</ol>
+
+			<h2>The desperate quest for an interrupt</h2>
+
+			<p>
+			If you experiment a little more with GPIOs you'll see
+			that interrupt-based interaction (with the file
+			<code>/sys/class/gpio/$gpioN/edge</code>)
+			is not working
+			</p>
+
+			<p>That's because qemu support for bcm2583 GPIOs is not
+			present. You can find a patched version of the hypervisor
+			at [5], using this one you'll get interrupt delivered to
+			your guest OS application!
+			</p>
+
+			<p>
+			In details, this patch connect the
+			<code>bcm2583_gpio.c</code> device, which controls
+			Raspberry Pi MMIO GPIOs, to the
+			<code>bcm2583_ic.c</code> interrupt controller.
+
+			With this bus we can ask to the Interrupt Controller
+			to fire a specific GPU interrupt
+			delivering interrupts using the
+			<code>qemu_set_irq</code> function.
+
+			These interrupts are grouped in three, as stated by the
+			kernel code [6].  The first GPU interrupt we need to fire
+			is the interrupt 49.  Using this the first bank of GPIOs
+			(0-27) will be signalled.  Then, the guest will ask for
+			which GPIO raised the interrupt, which is specified in
+			the EDS register.
+			</p>
+
+			<p>
+			Also, the kernel need to set-up specific registers to
+			instruct the BCM2583 of which interrupt it wants.
+			These registers are loaded and managed in the same file
+			which handles GPIOs (bcm2583_gpios.c).
+			</p>
+
+			<p>
+			The behaviour could be schematized as follows:
+			<img width="95%" src="../data/qemu-virtual-gpio.png"></img>
+			</p>
+
+			So, that's all for now, have fun with your virtual
+			Raspberry PI and let me know what do you think of it!
+			<br/>
+			<br/>
+			Bye,<br/>
+			D.
+			<br/>
+			<br/>
+			<hr/>
+			[1] <a
+				    href="https://github.com/berdav/qemu-rpi-gpio">
+				https://github.com/berdav/qemu-rpi-gpio
+				</a><br/>
+			[2] <a
+				    href="https://www.raspberrypi.org/app/uploads/2012/02/BCM2835-ARM-Peripherals.pdf">
+				https://www.raspberrypi.org/app/uploads/2012/02/BCM2835-ARM-Peripherals.pdf</a><br/>
+			[3] <a
+				    href="https://qemu.readthedocs.io/en/latest/devel/qtest.html"/ >
+				    https://qemu.readthedocs.io/en/latest/devel/qtest.html</a><br/>
+			[4] The Raspberry Pi interrupts are grouped by
+			GPU ones and ARM ones, the GPIOs are controlled by the GPU.<br/>
+			[5] <a
+				    href="https://github.com/berdav/qemu">
+				https://github.com/berdav/qemu
+				</a><br/>
+			[6] <a
+				    href="https://elixir.bootlin.com/linux/latest/source/drivers/pinctrl/bcm/pinctrl-bcm2835.c#L655">
+				    https://elixir.bootlin.com/linux/latest/source/drivers/pinctrl/bcm/pinctrl-bcm2835.c#L655
+				</a><br/>
+		</div>
+	</body>
+</html>
