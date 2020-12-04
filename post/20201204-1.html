@@ -82,18 +82,20 @@
 <br/>
 
 			Respectively to read and write a long word.
-			(In red you see my requests, in blue the responses).
+			My requests are highlighted in red, in blue the
+			responses.
 			</p>
 
 			<p>
 			Pretty easy, no?  Well...sort of...if you write a
 			wrong command on the socket, the qemu hypervisor will
-			explode, and with it your swearing.
+			explode, generating rage and swear words.
 			</p>
 			<p>
-			Also, we have a technical problem, if we try to
-			write on the location of the GPIO MMIO specified
-			in the datasheet (0x7e20xxxx), nothing will happen...
+			Futhermore, we have a technical problem, if we
+			try to write on the location of the GPIO MMIO
+			specified in the datasheet (0x7e20xxxx), nothing
+			will happen...
 			</p>
 
 			<h2>Search a guest memory location</h2>
@@ -203,8 +205,9 @@ $ ./virtual-gpio
 			</p>
 
 			<p>
-			Also, the kernel need to set-up specific registers to
-			instruct the BCM2583 of which interrupt it wants.
+			Futhermore, the kernel need to set-up specific
+			registers to instruct the BCM2583 of which
+			interrupt it wants.
 			These registers are loaded and managed in the same file
 			which handles GPIOs (bcm2583_gpios.c).
 			</p>
