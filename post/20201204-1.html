@@ -14,7 +14,7 @@
 			Hi!<br/>
 			<br/>
 			QEMU is an awesome software.
-			When I'm doing operating system
+			When I do operating system
 			development-related things, I always
 			try them in QEMU.  That's the case of simulating
 			GPIOs.<br/>
@@ -33,7 +33,7 @@
 			But every student always have a computer, which
 			is usually running a Linux distribution. :)<br/>
 			<br/>
-			For this task, I've developed a simulator, which
+			For this task, I've developed a simulator, than
 			you can download at [1].  With this you can
 			simulate GPIOs on a virtual raspberry Pi.<br/>
 			<br/>
@@ -47,13 +47,14 @@
 			command which will overfit the setup.</p>
 			<p>Therefore the only way to do so is from QEMU itself.</p>
 			<p>
-			The GPIOs are MMIO (Memory Mapped I/O),
-			writing to a location in memory will write on the gpio
-			control pheriperal.  Therefore is extremely easy
-			to modify, we just need to write on the guest memory. :)
+			The GPIOs are MMIO (Memory Mapped I/O):
+			a write issued to a specific memory location,
+			will issue a command on the GPIO controller.
+			Therefore is extremely easy to modify, we just
+			need to write on the guest memory. :)
 			</p>
 			<img width="95%" src="../data/bcm2835-gpios.png"></img>
-			<p>In the image you can see the mapping of GPIOs
+			<p>In this image you can see the mapping of GPIOs
 			controls and their memory addresses.  A more
 			detailed documentation is presented in the bcm2835
 			datasheet[2].
