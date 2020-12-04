@@ -119,8 +119,8 @@
 			application published at [1] works.
 			</p>
 			<p>
-			This procedure is also applicable at vanilla qemu.
-			</p>
+			This procedure is also applicable to vanilla qemu.
+			</p>                               to
 
 			You can try it launching virtual-gpio and then exporting gpio 4 in the
 			virtual machine with the following commands:
@@ -174,7 +174,7 @@ $ ./virtual-gpio
 			<h2>The desperate quest for an interrupt</h2>
 
 			<p>
-			If you experiment a little more with GPIOs you'll see
+			If you practice a little more with GPIOs you'll see
 			that interrupt-based interaction (with the file
 			<code>/sys/class/gpio/$gpioN/edge</code>)
 			is not working
@@ -182,12 +182,12 @@ $ ./virtual-gpio
 
 			<p>That's because qemu support for bcm2583 GPIOs is not
 			present. You can find a patched version of the hypervisor
-			at [5], using this one you'll get interrupt delivered to
-			your guest OS application!
+			at [5], using this version you interrupt will
+			get delivered to your guest OS!
 			</p>
 
 			<p>
-			In details, this patch connect the
+			In details, this patch connects the
 			<code>bcm2583_gpio.c</code> device, which controls
 			Raspberry Pi MMIO GPIOs, to the
 			<code>bcm2583_ic.c</code> interrupt controller.
