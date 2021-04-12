@@ -1,0 +1,3 @@
+User-Agent: *
+Disallow: /~davide.berardi6/seclab/risultati-2021.html
+Disallow: /seclab/risultati-2021.html
