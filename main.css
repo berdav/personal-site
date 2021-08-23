@@ -40,3 +40,15 @@ pre code {
 		font-size: 120%;
 	}
 }
+
+table td {
+  margin: 12px 12px 12px 12px;
+  padding: 12px 12px 12px 12px;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 10px;
+  *border-collapse: expression('separate', cellSpacing='10px');
+}
+
