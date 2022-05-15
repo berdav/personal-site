@@ -38,3 +38,4 @@ URL="$(get_photo_cdn_url "$1")"
 /usr/bin/curl -L "$URL" > tg_profile.jpg 2>/dev/null
 
 get_description "$1"
+chmod 644 tg_bio.jpg
