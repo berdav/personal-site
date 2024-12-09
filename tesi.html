@@ -10,25 +10,50 @@
 			<a href="index.html">Home</a>
 			<h1>Linee guida per la stesura della Tesi di Laurea</h1>
 			Queste linee guida servono per la richiesta e la
-			consegna della tesi con il team del Prof.
-			Prandini.<br/>
+			consegna della tesi. Si prega di far riferimento
+			al vademecum ufficiale [1] (e di leggerlo prima di
+			richiedere informazioni!) dell'università.
+			Queste linee guida riguardano lo svolgimento
+			della tesi con me come relatore, principalmente
+			nel campo della sicurezza informatica.
 			<br/>
-			I punti riguardano le Tesi triennali ma sono
-			estendibili alla scrittura delle Tesi magistrali.<br/>
+			<br/>
+			I punti riguardano sia Tesi triennali che Tesi magistrali.<br/>
+			<br/>
+			<h2>Richiesta della tesi</h2>
+			Per richiedere la tesi è necessario inviare una
+			mail al mio indirizzo istituzionale contenenti queste informazioni
+			principali:
+			<ul>
+				<li>Nome e cognome</li>
+				<li>Sessione di laurea</li>
+				<li>Tipologia di tesi: Le tesi si
+				dividono in due categorie: "Compilative" e "Sperimentali". Le prime prevedono la
+				scrittura di una relazione su un tema (e.g. "la crittografia
+				post-quantistica") non generando nessun dato personalmente (ma,
+				ovviamente scrivendo tutto il corpo della tesi senza copiare, fare
+				riferimento al capitolo "Plagio e proof reading"). Le seconde invece prevedono la
+				creazione di programmi, documenti ausiliari o prove di laboratorio di
+				proprio sviluppo (e.g. "analisi di
+				attacchi su diversi sistemi operativi
+				embedded". Le seconde ovviamente possono ambire (in media, non è una
+				regola) a punteggi più alti.
+				<li>Tema di riferimento: La materia
+				della sicurezza informatica è molto vasta, non è possibile svolgere una
+				tesi nel campo della sicurezza senza verticalizzarlo un attimo.
+				Potete prendere come riferimento i temi
+				del corso, altrimenti proporne uno voi,
+				basato su esperienze o interessi personali.</li>
+			</ul>
 			<br/>
 			<h2>Scrittura</h2>
 			<ul>
-				<li>La tesi scritta in LaTeX (a parte
-					casi particolari), questo
+				<li>La tesi può essere scritta in Word o LaTeX (a parte
+					casi particolari da indicare
+					nella prima mail), quest'ultimo
 					linguaggio è molto più elastico
-					di Word nella tipografia.
-					Esiste un template "ufficioso"
-					di Unibo[1].  <b>Non</b> è
-					possibile inserire il logo
-					dell'Università. Potete usare
+					di Word nella tipografia.  Potete usare
 					editor online come overleaf[2]</li><br/>
-				<li>Un numero minimo di pagine, circa 50
-					(contando le pagine vuote).</li><br/>
 				<li> La tesi prevede una bibliografia,
 					normalmente è necessario
 					raccogliere questa prima della
@@ -37,7 +62,11 @@
 					citazioni nel corpo della tesi.
 					Una tesi triennale ha bisogno di
 					circa 10 riferimenti
-					bibliografici.</li><br/>
+					bibliografici, una magistrale
+					circa 15 / 20.
+					Questi riferimenti possono
+					essere trovati su siti come <a href="https://scholar.google.com">Google Scholar</a>
+					</li><br/>
 				<li>È necessario inserire estratti di
 					codice, tabelle o immagini nella
 					tesi quando questi aiutano la
@@ -150,11 +179,61 @@
 			</ul>
 		</p>
 		<p>
-		<h2>Proof reading</h2>
-			Prima di inviare una prima revisione della tesi
+		<h2>Plagio e Proof reading</h2>
+			Prima di inviare una revisione della tesi
 			di laurea, assicuratevi di aver seguito questi
 			punti:
 			<ul>
+				<li><b>Plagio</b>
+					La tesi viene ovviamente
+					controllata accuratamente per quanto
+					riguarda il plagio. È vietato copiare, non prendere
+				  ispirazione. Questo vuole dire che potete inserire nel vostro documento
+				informazioni ottenute da altre fonti, ma queste non possono essere
+				riportate nella loro forma originale. In altre parole, dovete modificare
+				le fonti (NON IN FORMA AUTOMATICA) in modo da aggiungere un vostro
+				parere personale.</li>
+				<li><b>ChatGPT e sistemi di generazione del testo</b>
+						L'uso di ChatGPT o sistemi di generazione del testo (o
+immagini) non è esplicitamente vietato ma FORTEMENTE sconsigliato.
+						Ci sono due principali problemi con l'uso di questi
+strumenti:
+				<ul>
+					<li><b>Allucinazioni</b> i sistemi di AI INVENTANO, questo implica
+che i dati riportati dai sistemi possono essere estremamente vaghi e non
+corretti anche se possono sembrare molto convincenti. Facciamo un rapido controllo.
+					<img src="data/chatgpt.png" alt="Dialogo con ChatGPT"/>
+					<img src="data/chatgpt2.png" alt="Dialogo con ChatGPT"/>
+					<br/>
+					Per i più interessati, in fondo
+					a questo documento potete trovare un'interessante allucinazione sul
+					codice.
+					<br/>
+					Ovviamente potrebbe succedere
+					che ChatGPT vi dia un risultato
+					corretto, ma non nel 100% dei casi, provando diverse volte potete
+					riscontrare questo genere di risultati.
+					<br/>
+					<br/>
+					<span id=students><b>In linea di massima vi fidereste
+					mai se qualcuno avesse scritto con questo sistema il software dell'aereo
+					del vostro prossimo volo? Potete capire velocemente come questo
+					approccio non sia minimamente accettabile.</b></span>
+					<br/>
+					<br/>
+					</li>
+					<li><b>Stile di Scrittura</b>
+gli LLM tendono a scrivere in modo robotico, utilizzando molti elenchi
+puntati, inserendo parole auliche o frasi enormi "allungando il brodo", questo risulta essere
+particolarmente riconoscibile ad un occhio esperto.
+					</li>
+				</ul>
+				Sostanzialmente, istruendo ChatGPT sul
+				rifrasamento, proponendogli tutti i dati nel modo corretto, controllando
+				ESTREMAMENTE bene l'output, rifrasando le parole scorrette etc può dare
+				un valido aiuto. Cosa che, da un punto
+				di vista personale, probabilmente risulta essere più dispendiosa
+				rispetto a scrivere direttamente la tesi...
 				<li><b>Spell checking</b>.
 					Passate uno spell checker su
 					tutto il corpo della tesi, ne
@@ -272,70 +351,156 @@ s/interfaccie/interfacce/</code></pre><br/></li><br/>
 			</ul>
 			<p>
 			<h2>Invio Tesi</h2>
-			Se stai eseguendo una tesi con il Prof. Prandini
-			ricordati di inviare ogni domanda <b>sempre</b>
-			al seguente indirizzo:<br/><br/>
-			<pre><code>netsecresearch [at] live.unibo.it</code></pre><br/><br/>
 			Non è necessario inviare la tesi capitolo per
 			capitolo.  Quando vi sentite pronti, potete
 			inviare alcune parti per capire se state
 			procedendo nella direzione giusta.<br/>
 			<br/>
-			Richiediamo comunque alcuni update durante la
+			Richiedo comunque alcuni update durante la
 			stesura della tesi, p.e.  durante lo sviluppo di
 			un eventuale applicativo, fatevi sentire.
 			:)<br/>
 			<br/>
 			Evitate di inviare la tesi per sistemi
-			alternativi alle semplici e-mail (Teams o
+			alternativi alle semplici e-mail (Meet, Teams o
 			Telegram).<br/>
 			<br/>
-			N.B.: Normalmente abbiamo <u>molti</u> tesisti
-			per sessione.  Per questo, la consegna finale
-			indicata sul sito <b>non</b> è quella reale,
-			richiediamo la tesi completa (a meno di
-			correzioni/aggiunte) circa due settimane
-			prima.<br/>
-			<br/>
-			</p>
-			<p>
-			<h2>Presentazione</h2>
-			Le tesi triennali hanno a disposizione <b>solo 7
-			minuti</b> di presentazione (per quanto
-			riguarda Ingegneria Informatica).
-			Cercate di spiegare in questo poco tempo il
-			senso e la parte fondamentale di quello che
-			avete fatto.<br/>
-			<br/>
-			Non c'è un template richiesto per la
-			presentazione, potete realizzarla come più
-			preferite con i software che più preferite
-			(LaTeX, Google Slides, PowerPoint, LibreOffice
-			Impress, etc.), consigliamo di esportarla in PDF
-			per compatibilità tra i vari sistemi
-			operativi.<br/> <br/>
-			Consigliamo di limitare il numero di slides a
-			circa 5 / 6, non è facile presentare 30 slides
-			in 7 minuti.
-			Inoltre limitate i wall of text se non
-			strettamente necessari (in questo caso va bene
-			mettere tante immagini spiegandole a voce).<br/>
-			<br/>
-			La presentazione va inviata agli stessi
-			indirizzi, almeno un paio di giorni prima della
-			discussione di laurea.<br/>
+			N.B.: Normalmente ho <u>molti</u> tesisti
+			per sessione.  Consegnate la tesi per tempo!
 			<br/>
 			</p>
 			<hr/>
-			[1] <a href="https://corsi.unibo.it/magistrale/ScienzeInternet/tesi-in-latex">
-				https://corsi.unibo.it/magistrale/informatica/tesi-in-latex
-			    </a><br/>
+			[1] <a href="https://www.unimercatorum.it/ateneo/documenti-ufficiali">Disponibile
+				qui sotto la voce "Regolamento della Prova finale e della Tesi di
+				Laurea"</a>
 			[2] <a href="https://overleaf.com">
 				https://overleaf.com
 			    </a><br/>
 			[3] <a href="https://en.wikipedia.org/wiki/Link_rot">
 				https://en.wikipedia.org/wiki/Link_rot
 			    </a><br/>
+			<br/>
+			<hr/>
+			<hr/>
+			<h2>Allucinazione di ChatGPT su codice Python</h2>
+			Dopo aver chiesto "Crea un programma python per
+ottenere gli indirizzi ipv6 presenti all'interno di una stringa" ChatGPT
+ha risposto nel seguente modo:
+			<br/>
+			<br/>
+<hr/>
+			<h3>Risposta di ChatGPT</h3>
+			Per estrarre gli indirizzi <b>IPv6</b> presenti
+			all'interno di una stringa, possiamo utilizzare una <b>espressione
+			regolare</b> in Python. Un indirizzo IPv6 ha una struttura abbastanza
+			definita e può essere riconosciuto con un
+pattern regolare.<br/>
+			<br/>
+
+			Ecco un programma Python che trova tutti gli indirizzi IPv6 all'interno di una stringa:
+
+			<h3>Codice Python</h3>
+			<br/>
+<pre><code>import re
+
+def extract_ipv6_addresses(text):
+    """
+    Estrae gli indirizzi IPv6 da una stringa.
+    
+    :param text: La stringa da cui estrarre gli indirizzi IPv6.
+    :return: Una lista di indirizzi IPv6 trovati.
+    """
+    # Pattern per l'indirizzo IPv6
+    ipv6_pattern = r'\b([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\b'
+    
+    # Trova tutte le corrispondenze di indirizzi IPv6 nella stringa
+    ipv6_addresses = re.findall(ipv6_pattern, text)
+    
+    return ipv6_addresses
+
+# Esempio di utilizzo
+if __name__ == "__main__":
+    test_string = "I have two IPv6 addresses:
+      2001:0db8:85a3:0000:0000:8a2e:0370:7334
+      and 2001:db8::ff00:42:8329."
+    ipv6_addresses = extract_ipv6_addresses(test_string)
+    
+    print("Indirizzi IPv6 trovati:")
+    for address in ipv6_addresses:
+        print(address)</code></pre><br/>
+
+<h3>Spiegazione del codice</h3>
+<br/>
+
+<ol>
+<li><b>Pattern Regolare</b>:
+   <ul>
+    <li>L'espressione regolare utilizzata
+(<code>r'\b([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\b'</code>) cattura gli
+indirizzi IPv6.</li>
+    <li>L'indirizzo IPv6 è formato da 8 gruppi di 1-4 caratteri
+esadecimali separati da due punti (<code>:</code>). Ogni gruppo può
+essere da 1 a 4 caratteri, come in
+<code>2001:0db8:85a3:0000:0000:8a2e:0370:7334</code>.</li>
+    <li>La parte <code>\b</code> indica un "confine di parola", in modo che il pattern riconosca l'indirizzo solo come entità separata (non parte di una parola più lunga).
+   </ul>
+   
+<li> <b>Funzione <code>re.findall</code></b>:<br/>
+<ul>
+   <li><code>re.findall</code> trova tutte le occorrenze del pattern
+nella stringa di testo e le restituisce come lista.</li>
+</ul>
+
+<li><b>Esempio</b>:<br/>
+<ul>
+<li> La stringa di esempio contiene due indirizzi IPv6:
+<code>2001:0db8:85a3:0000:0000:8a2e:0370:7334</code> e
+<code>2001:db8::ff00:42:8329</code>.</li>
+</ul>
+</ol>
+
+<h3>Esempio di Output</h3>
+
+Se esegui il programma con il testo di esempio:
+
+<h4>Input:</h4>
+<br/>
+<pre><code>I have two IPv6 addresses: 2001:0db8:85a3:0000:0000:8a2e:0370:7334
+and 2001:db8::ff00:42:8329.</code></pre>
+<br/>
+
+<h4>Output:</h4>
+<br/>
+<pre><code>Indirizzi IPv6 trovati:
+2001:0db8:85a3:0000:0000:8a2e:0370:7334
+2001:db8::ff00:42:8329</code></pre>
+
+<h4>Considerazioni</h4>
+<ul>
+<li>L'espressione regolare utilizzata non gestisce varianti come
+indirizzi IPv6 abbreviati (es. <code>2001:db8::ff00:42:8329</code>), ma puoi
+adattarla per supportare questi casi, se necessario.</li>
+<li>Se vuoi migliorare il programma per includere anche indirizzi con
+abbreviazioni o con "::", puoi modificare l'espressione regolare per
+adattarla a questi formati.</li>
+</ul>
+<br/>
+
+Se hai altre domande o vuoi modificare il programma per casi specifici, fammi sapere! 😊
+<br/>
+<hr/>
+Nonostante sia veramente credibile e sfido chiunque, dato uno sguardo
+veloce, di accorgersi dell'errore. Si può facilmente notare che (a parte la schematicità del discorso,
+pieno di elenchi puntati), il programma non è corretto. Basta lanciarlo:
+<br/>
+<br/>
+<pre><code>guest@generic:~$ python3 /tmp/test.py
+Indirizzi IPv6 trovati:
+0370:</code></pre><br/>
+Non sono un grande esperto di ChatGPT e non l'ho "fregato" con richieste
+patricolari o indotto in tentazione, ho solo creato un paio di programmi
+prima di incorrere in un suo strafalcione...
+
 		</div>
 	</body>
 </html>
