@@ -1,0 +1,17 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+# Canonical URLs
+Canonical: https://ihateyour.cloud/.well-known/security.txt
+
+# Our security address
+Contact: mailto:berardi.dav@gmail.com
+
+Expires: 2035-12-04T23:00:00.000Z
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQsyLcw1xy/S2l7UYzEM3e8WY50fQUCaChQ4AAKCRDEM3e8WY50
+fZbMAP9OMT1AcZIvtni5hoZIY3uOvhj7IJ3bX/0id/Y2Sl8z7gEAqn+wkEHhTYk2
+kEtpLGtFWw2fWIQ/1Pk9bjLEhk9Z5AM=
+=fF+M
+-----END PGP SIGNATURE-----
