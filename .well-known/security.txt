@@ -7,11 +7,13 @@ Canonical: https://ihateyour.cloud/.well-known/security.txt
 # Our security address
 Contact: mailto:berardi.dav@gmail.com
 
-Expires: 2035-12-04T23:00:00.000Z
+Expires: 2026-04-04T23:00:00.000Z
+
+Encryption: https://ihateyour.cloud/pubkey.pem
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQsyLcw1xy/S2l7UYzEM3e8WY50fQUCaChQ4AAKCRDEM3e8WY50
-fZbMAP9OMT1AcZIvtni5hoZIY3uOvhj7IJ3bX/0id/Y2Sl8z7gEAqn+wkEHhTYk2
-kEtpLGtFWw2fWIQ/1Pk9bjLEhk9Z5AM=
-=fF+M
+iHUEARYKAB0WIQQsyLcw1xy/S2l7UYzEM3e8WY50fQUCaChSpAAKCRDEM3e8WY50
+fXTUAQDU/abYi3mU7JaOutE+vhH3jrHNS7lBXacnxyCouplAAQEArU5Nzn6xkscn
+lugr0904X4JwphZmfxWO0EmHcuqrkQU=
+=xmID
 -----END PGP SIGNATURE-----
